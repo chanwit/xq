@@ -35,7 +35,7 @@ class App implements Runnable {
     @CommandLine.Parameters(arity = "1..1", paramLabel = "QUERY", description = "query or file")
     private String query
 
-    @CommandLine.Option(names = ["-o", "--output"], description = "output format candidates are: default, json, yaml")
+    @CommandLine.Option(names = ["-o", "--output"], description = "output format candidates are: default, json, yaml, raw")
     Output output = Output.DEFAULT
 
     static void main(String[] args) {
@@ -63,33 +63,9 @@ class App implements Runnable {
     @Override
     void run() {
         if(json) {
-            def json = new JsonSlurper().parse(System.in.newReader())
-            def result
-            // if starts with @, it's filename
-            if (query.startsWith("@")) {
-                def filename = (query - '@') + '.xq'
-                Binding b = new Binding()
-                b.setVariable("json", json)
-                GroovyShell sh = new GroovyShell(b)
-                result = sh.evaluate(new File(filename))
-            } else {
-                // it's an expression
-                result = Eval.x(json, "x" + query)
-            }
-
-            def outputMode = output
-            if(output == Output.DEFAULT) {
-                outputMode = Output.JSON
-            }
-            printOut(result, outputMode)
+            processJson()
         } else if(yaml) {
-            def root = new Yaml().parse(System.in.newReader())
-            def result = Eval.x(root, "x" + query)
-            def outputMode = output
-            if(output == Output.DEFAULT) {
-                outputMode = Output.YAML
-            }
-            printOut(result, outputMode)
+            processYaml()
         } else if(line) {
             def r = System.in.newReader()
             def lines = r.lines().collect { line ->
@@ -123,6 +99,33 @@ class App implements Runnable {
             }
 
         }
+    }
+
+    private void processYaml() {
+        def root = new Yaml().parse(System.in.newReader())
+        def result = Eval.x(root, "x" + query)
+        def outputMode = output
+        if (output == Output.DEFAULT) {
+            outputMode = Output.YAML
+        }
+        printOut(result, outputMode)
+    }
+
+    private void processJson() {
+        JsonInput input = new JsonInput()
+        Reader reader = System.in.newReader()
+        Object result
+        if (query.startsWith("@")) {
+            def filename = (query - '@') + '.xq'
+            result = input.query(reader, new File(filename))
+        } else {
+            result = input.query(reader, query)
+        }
+        Output outputMode = output
+        if (output == Output.DEFAULT) {
+            outputMode = Output.JSON
+        }
+        printOut(result, outputMode)
     }
 
 }

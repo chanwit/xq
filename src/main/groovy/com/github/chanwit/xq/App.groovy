@@ -20,19 +20,24 @@ class App implements Runnable {
 
     private CommandLine cmdline
 
-    @CommandLine.Option(names = ["--yaml"], description = "read input as yaml")
-    boolean yaml
+    @CommandLine.ArgGroup(exclusive = true, multiplicity = "0..1", heading="Input Format:\n")
+    InputFormat inputFormat;
 
-    @CommandLine.Option(names = ["--json"], description = "read input as json")
-    boolean json
+    static class InputFormat {
+        @CommandLine.Option(names = ["--json"], description = "Read input as a JSON")
+        boolean json
 
-    @CommandLine.Option(names = ["--line"], description = "read input line by line")
-    boolean line
+        @CommandLine.Option(names = ["--line"], description = "Read input line by line")
+        boolean line
 
-    @CommandLine.Option(names = ["--txt", "--text"], description = "read input as text")
-    boolean text
+        @CommandLine.Option(names = ["--txt", "--text"], description = "Read input as a text")
+        boolean text
 
-    @CommandLine.Parameters(arity = "1..1", paramLabel = "QUERY", description = "query or file")
+        @CommandLine.Option(names = ["--yaml"], description = "Read input as a YAML")
+        boolean yaml
+    }
+
+    @CommandLine.Parameters(index= "0", paramLabel = "<QUERY>", description = "A query string or a @filename.")
     private String query
 
     @CommandLine.Option(names = ["-o", "--output"], description = "output format candidates are: default, json, yaml, raw")
@@ -62,11 +67,11 @@ class App implements Runnable {
 
     @Override
     void run() {
-        if(json) {
+        if(inputFormat.json) {
             processJson()
-        } else if(yaml) {
+        } else if(inputFormat.yaml) {
             processYaml()
-        } else if(line) {
+        } else if(inputFormat.line) {
             def r = System.in.newReader()
             def lines = r.lines().collect { line ->
                 Eval.x(line, "x" + query).toString()

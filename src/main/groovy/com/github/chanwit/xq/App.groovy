@@ -45,7 +45,9 @@ class App implements Runnable {
 
     static void main(String[] args) {
         def app = new App()
-        def cmdline = new CommandLine(app).setCaseInsensitiveEnumValuesAllowed(true)
+        def cmdline = new CommandLine(app)
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .setExpandAtFiles(false)
         app.cmdline = cmdline
         cmdline.execute(args)
     }

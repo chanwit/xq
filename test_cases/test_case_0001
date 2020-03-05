@@ -1,0 +1,56 @@
+[
+    {
+        "Arn": "arn:aws:eks:us-west-2:111111111111:cluster/bbb",
+        "CertificateAuthority": {
+            "Data": "cert_data"
+        },
+        "ClientRequestToken": null,
+        "CreatedAt": "2020-03-04T05:34:16Z",
+        "Endpoint": "https://endpoint",
+        "Identity": {
+            "Oidc": {
+                "Issuer": "https://oidc"
+            }
+        },
+        "Logging": {
+            "ClusterLogging": [
+                {
+                    "Enabled": false,
+                    "Types": [
+                        "api",
+                        "audit",
+                        "authenticator",
+                        "controllerManager",
+                        "scheduler"
+                    ]
+                }
+            ]
+        },
+        "Name": "bbb",
+        "PlatformVersion": "eks.9",
+        "ResourcesVpcConfig": {
+            "ClusterSecurityGroupId": "sg-01c4ded22fb620c9d",
+            "EndpointPrivateAccess": false,
+            "EndpointPublicAccess": true,
+            "PublicAccessCidrs": [
+                "0.0.0.0/0"
+            ],
+            "SecurityGroupIds": [
+                "sg-0f5937a10dc2f4b62"
+            ],
+            "SubnetIds": [
+                "subnet-0e4c68ff8a430c205",
+                "subnet-055a933a99edd9381",
+                "subnet-047df39d29b36b4e2",
+                "subnet-040b0ac2e2493ee01",
+                "subnet-02645b8e140e7c5cb",
+                "subnet-0a9ed5b9acc5cffde"
+            ],
+            "VpcId": "vpc-02d74d30ff412e451"
+        },
+        "RoleArn": "arn:aws:iam::111111111111:role/eksctl-bbb-cluster-ServiceRole-YL2B5FF74LJT",
+        "Status": "ACTIVE",
+        "Tags": {},
+        "Version": "1.14"
+    }
+]

@@ -1,0 +1,11 @@
+{
+	"containers": [
+		{
+			"command":[
+				"kube-proxy",
+				"arg1",
+				"arg2"
+			]
+		}
+	]
+}

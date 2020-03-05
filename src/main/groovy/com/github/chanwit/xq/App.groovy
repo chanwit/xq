@@ -13,7 +13,7 @@ import picocli.CommandLine
 @CommandLine.Command(name = "xq",
         mixinStandardHelpOptions = true,
         version = "v0.1.0",
-        description = "Configuration Query")
+        description = "Any Configuration Query")
 class App implements Runnable {
 
     enum Output { DEFAULT, JSON, YAML, RAW }

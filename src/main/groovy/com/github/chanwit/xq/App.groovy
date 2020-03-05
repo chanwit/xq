@@ -123,7 +123,7 @@ class App implements Runnable {
         Reader reader = System.in.newReader()
         Object result
         if (query.startsWith("@")) {
-            def filename = (query - '@') + '.xq'
+            def filename = (query - '@')
             result = input.query(reader, new File(filename))
         } else {
             result = input.query(reader, query)

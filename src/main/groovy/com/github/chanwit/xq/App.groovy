@@ -109,7 +109,7 @@ class App implements Runnable {
     }
 
     private void processYaml() {
-        def root = new Yaml().parse(System.in.newReader())
+        def root = new Yaml().load(System.in.newReader())
         def result = Eval.x(root, "x" + query)
         def outputMode = output
         if (output == Output.DEFAULT) {
